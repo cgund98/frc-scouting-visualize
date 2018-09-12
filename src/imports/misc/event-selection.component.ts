@@ -1,20 +1,22 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-
-import template from './event-selection.component.html';
+import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service';
 
 @Component({
     selector: 'event-selection',
-    template
+    templateUrl: './event-selection.component.html',
 })
 
-export class EventSelectionComponent implements ngOnInit {
+export class EventSelectionComponent implements OnInit {
 
     openValue: boolean = false;
     @Output() openChange = new EventEmitter();
 
     competition = new FormControl('', Validators.required);
     currentComp: string;
+
+    constructor(@Inject(LOCAL_STORAGE) private storage: WebStorageService) {}
 
     @Input()
     get open() {
@@ -27,7 +29,7 @@ export class EventSelectionComponent implements ngOnInit {
     }
 
     ngOnInit() {
-        // this.currentComp = SessionAmplify.get("competition");
+        this.currentComp = this.storage.get("competition");
     }
 
     test() {
@@ -36,7 +38,7 @@ export class EventSelectionComponent implements ngOnInit {
 
     change() {
         if (this.competition.invalid) {console.log('invalid');return}
-        SessionAmplify.set("competition", this.competition.value)
+        this.storage.set("competition", this.competition.value)
         this.currentComp = this.competition.value;
         this.open = false;
 

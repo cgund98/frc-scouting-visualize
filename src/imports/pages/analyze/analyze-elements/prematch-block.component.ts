@@ -1,13 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter,
          OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-
-import template from './prematch-block.component.html';
-
-import { Matches } from '../../../../collections/matches.collection';
+import { Inject, Injectable } from '@angular/core';
+import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service';
+import { DataService } from '../../../../app/data.service';
 
 @Component({
   selector: 'prematch-block',
-  template
+  templateUrl: './prematch-block.component.html',
 })
 
 export class PrematchBlockComponent implements OnInit {
@@ -35,8 +34,11 @@ export class PrematchBlockComponent implements OnInit {
   { name: 'Max', prop: 'max', width: 75 },
   ];
 
+  constructor(@Inject(LOCAL_STORAGE) private storage: WebStorageService, private _dataService: DataService) {}
+
   ngOnInit() {
-    this.matches = Matches.find({}).fetch();
+
+    this.matches = this._dataService.get("matches.json");
     if (this.matches.length > 0) {
       this.refresh();
     }
@@ -64,12 +66,12 @@ export class PrematchBlockComponent implements OnInit {
     var teamStats = this.getTeamStats();
 
     if (teamStats.missing) {
-      autonRows = [
+      let autonRows = [
       { propName: 'Missing!' },
       { propName: 'Missing!' },
       { propName: 'Missing!' },
       ];
-      teleopRows = [
+      let teleopRows = [
       { location: 'Missing!' },
       { location: 'Missing!' },
       { location: 'Missing!' },
@@ -84,7 +86,7 @@ export class PrematchBlockComponent implements OnInit {
   }
 
   getTeamStats() {
-    this.matches = Matches.find({}).fetch();
+    this.matches = this._dataService.get("matches.json");
 
     var teamStats = {
       missing: true,
@@ -92,7 +94,6 @@ export class PrematchBlockComponent implements OnInit {
       totalPickedUp: 0,
       totalPlaced: 0,
       climbs: 0,
-      totalPlaced: 0,
       lowTeleopPlaced: 0,
       highTeleopPlaced: 0,
       lowAutonPlaced: 0,

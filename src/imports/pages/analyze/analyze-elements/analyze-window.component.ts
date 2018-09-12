@@ -1,18 +1,19 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
-import template from './analyze-window.component.html';
-
-import { Matches } from '../../../../collections/matches.collection';
+import { Inject, Injectable } from '@angular/core';
+import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service';
+import { DataService } from '../../../../app/data.service';
+import 'json-query';
 
 @Component({
   selector: 'analyze-window',
-  template
+  templateUrl: './analyze-window.component.html',
 })
 
 export class AnalyzeWindowComponent implements OnInit {
 
-  matches;
+  matches: any;
   competition: string;
+  query: string;
 
   rows = [
     {teamNum: "Please click to refresh"}
@@ -37,127 +38,132 @@ export class AnalyzeWindowComponent implements OnInit {
       { name: 'Matches', prop: 'matchesPlayed', width: 100 },
   ];
 
+  constructor(@Inject(LOCAL_STORAGE) private storage: WebStorageService, private _dataService: DataService) {}
+
   ngOnInit() {
-    this.competition = SessionAmplify.get("competition");
+    this.competition = this.storage.get("competition");
     if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
-    this.matches = Matches.find({event: this.competition}).fetch();
+    this.query = "matches[event=" + this.competition + "]"
+    // this.matches = Matches.find({event: this.competition}).fetch();
+    this.matches = this._dataService.get("matches.json")
+
     if (this.matches.length > 0) {
-      this.refresh();
+      // this.refresh();
     }
   }
 
-  refresh() {
-      this.competition = SessionAmplify.get("competition");
-      if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
-      this.matches = Matches.find({event: this.competition}).fetch();
-
-    var teamStats = [];
-
-    for (var i=0; i < this.matches.length; i++) {
-      var match = this.matches[i];
-      var teamFound = false;
-
-      for (var j=0; j < teamStats.length; j++) {
-        var team = teamStats[j];
-        if (team.teamNum == match.teamNum ) {
-          teamFound = true;
-          team.matchesPlayed += 1;
-          team.totalPickedUp += match.totalPickedUp;
-          team.runs += match.runs.length;
-          if (match.climbed) {
-            team.climbs += 1;
-          }
-          if (!team.runTimes) {
-            team.runTimes = []
-          }
-
-          for (var k=0; k < match.runs.length; k++) {
-            var run = match.runs[k];
-            if (!run.missedShot) {
-              team.totalPlaced += 1;
-              if (run.placeLocation.includes('middle')) {
-                team.highPlaced += 1;
-              } else {
-                team.lowPlaced += 1;
-              }
-            }
-
-            if (run.timeElapsed) {
-              team.runTimes.push(run.timeElapsed);
-            }
-          }
-        }
-      }
-      if (!teamFound) {
-        var team = {};
-        team.teamNum = match.teamNum;
-        team.matchesPlayed = 1;
-        team.totalPickedUp = match.totalPickedUp;
-        team.totalPlaced = match.totalPlaced;
-        team.climbs = 0;
-        team.totalPlaced = 0;
-        team.lowPlaced = 0;
-        team.highPlaced = 0;
-        team.lowAutonPlaced = 0;
-        team.highAutonPlaced = 0;
-        team.runs = match.runs.length;
-        if (match.climbed) {
-          team.climbs += 1;
-        }
-        if (!team.runTimes) {
-          team.runTimes = []
-        }
-
-        for (var k=0; k < match.runs.length; k++) {
-          var run = match.runs[k];
-          if (!run.missedShot) {
-            team.totalPlaced += 1;
-            if (run.placeLocation.includes('middle')) {
-              team.highPlaced += 1;
-              if (run.isAuton) {
-                team.highAutonPlaced +=1;
-              }
-            } else {
-              team.lowPlaced += 1;
-              if (run.isAuton) {
-                team.lowAutonPlaced +=1;
-              }
-            }
-          }
-
-          if (run.timeElapsed) {
-            team.runTimes.push(run.timeElapsed);
-          }
-        }
-        teamStats.push(team);
-      }
-
-    }
-
-    var rows = [];
-
-    for (var i=0; i < teamStats.length; i++) {
-      var row = {};
-      var teamStat = teamStats[i];
-      row.totalPlaced = teamStat.totalPlaced;
-      row.climbs = teamStat.climbs;
-      row.teamNum = teamStat.teamNum;
-      row.lowPlaced = teamStat.lowPlaced;
-      row.highPlaced = teamStat.highPlaced;
-      row.lowAutonPlaced = teamStat.lowAutonPlaced;
-      row.highAutonPlaced = teamStat.highAutonPlaced;
-      row.matchesPlayed = teamStat.matchesPlayed;
-
-      var totalTimes = 0;
-      for (var j=0; j < teamStat.runTimes.length; j++) {
-        totalTimes += teamStat.runTimes[j];
-      }
-      row.avgRunTime = Math.round(totalTimes / teamStat.runTimes.length * 10) / 10;
-      rows.push(row);
-    }
-
-
-    this.rows = rows;
-  }
+  // refresh() {
+  //     this.competition = this.storage.get("competition");
+  //     if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
+  //     this.matches = Matches.find({event: this.competition}).fetch();
+  //
+  //   var teamStats = [];
+  //
+  //   for (var i=0; i < this.matches.length; i++) {
+  //     var match = this.matches[i];
+  //     var teamFound = false;
+  //
+  //     for (var j=0; j < teamStats.length; j++) {
+  //       var team = teamStats[j];
+  //       if (team.teamNum == match.teamNum ) {
+  //         teamFound = true;
+  //         team.matchesPlayed += 1;
+  //         team.totalPickedUp += match.totalPickedUp;
+  //         team.runs += match.runs.length;
+  //         if (match.climbed) {
+  //           team.climbs += 1;
+  //         }
+  //         if (!team.runTimes) {
+  //           team.runTimes = []
+  //         }
+  //
+  //         for (var k=0; k < match.runs.length; k++) {
+  //           var run = match.runs[k];
+  //           if (!run.missedShot) {
+  //             team.totalPlaced += 1;
+  //             if (run.placeLocation.includes('middle')) {
+  //               team.highPlaced += 1;
+  //             } else {
+  //               team.lowPlaced += 1;
+  //             }
+  //           }
+  //
+  //           if (run.timeElapsed) {
+  //             team.runTimes.push(run.timeElapsed);
+  //           }
+  //         }
+  //       }
+  //     }
+  //     if (!teamFound) {
+  //       var team = {};
+  //       team.teamNum = match.teamNum;
+  //       team.matchesPlayed = 1;
+  //       team.totalPickedUp = match.totalPickedUp;
+  //       team.totalPlaced = match.totalPlaced;
+  //       team.climbs = 0;
+  //       team.totalPlaced = 0;
+  //       team.lowPlaced = 0;
+  //       team.highPlaced = 0;
+  //       team.lowAutonPlaced = 0;
+  //       team.highAutonPlaced = 0;
+  //       team.runs = match.runs.length;
+  //       if (match.climbed) {
+  //         team.climbs += 1;
+  //       }
+  //       if (!team.runTimes) {
+  //         team.runTimes = []
+  //       }
+  //
+  //       for (var k=0; k < match.runs.length; k++) {
+  //         var run = match.runs[k];
+  //         if (!run.missedShot) {
+  //           team.totalPlaced += 1;
+  //           if (run.placeLocation.includes('middle')) {
+  //             team.highPlaced += 1;
+  //             if (run.isAuton) {
+  //               team.highAutonPlaced +=1;
+  //             }
+  //           } else {
+  //             team.lowPlaced += 1;
+  //             if (run.isAuton) {
+  //               team.lowAutonPlaced +=1;
+  //             }
+  //           }
+  //         }
+  //
+  //         if (run.timeElapsed) {
+  //           team.runTimes.push(run.timeElapsed);
+  //         }
+  //       }
+  //       teamStats.push(team);
+  //     }
+  //
+  //   }
+  //
+  //   var rows = [];
+  //
+  //   for (var i=0; i < teamStats.length; i++) {
+  //     var row = {};
+  //     var teamStat = teamStats[i];
+  //     row.totalPlaced = teamStat.totalPlaced;
+  //     row.climbs = teamStat.climbs;
+  //     row.teamNum = teamStat.teamNum;
+  //     row.lowPlaced = teamStat.lowPlaced;
+  //     row.highPlaced = teamStat.highPlaced;
+  //     row.lowAutonPlaced = teamStat.lowAutonPlaced;
+  //     row.highAutonPlaced = teamStat.highAutonPlaced;
+  //     row.matchesPlayed = teamStat.matchesPlayed;
+  //
+  //     var totalTimes = 0;
+  //     for (var j=0; j < teamStat.runTimes.length; j++) {
+  //       totalTimes += teamStat.runTimes[j];
+  //     }
+  //     row.avgRunTime = Math.round(totalTimes / teamStat.runTimes.length * 10) / 10;
+  //     rows.push(row);
+  //   }
+  //
+  //
+  //   this.rows = rows;
+  // }
 
 }
