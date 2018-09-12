@@ -5,9 +5,9 @@ import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { routes } from './app.routes';
-import { CollectPageModule } from '../imports/pages/collect/collect-page.module';
-import { AnalyzePageModule } from '../imports/pages/analyze/analyze-page.module';
-import { MiscModule } from '../imports/misc/misc.module';
+import { CollectPageModule } from '../pages/collect/collect-page.module';
+import { AnalyzePageModule } from '../pages/analyze/analyze-page.module';
+import { MiscModule } from '../misc/misc.module';
 
 
 @NgModule({

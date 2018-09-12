@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
+import template from './app.component.html';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app',
+  template,
 })
+
 export class AppComponent {
-  title = 'frc-scouting-visualize';
+  eventSelectionOpen: boolean;
+
+  constructor() {}
+
 }
