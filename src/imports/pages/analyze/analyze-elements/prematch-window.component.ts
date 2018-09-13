@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { PrematchBlockComponent } from './prematch-block.component';
+import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service';
+
+import { EventDataService } from '../../../../app/data.service';
 
 @Component({
   selector: 'prematch-window',
@@ -15,9 +18,24 @@ export class PrematchWindowComponent implements OnInit {
 
   @ViewChild('blueBlock1') blueBlock1: PrematchBlockComponent;
 
-  ngOnInit() {
+  constructor(@Inject(LOCAL_STORAGE) private storage: WebStorageService) {}
+
+  async ngOnInit() {
     // this.json = require('../../../../../test.json');
-    this.json = [{}];
+    var event = this.storage.get("competition");
+    var url = "https://www.thebluealliance.com/api/v3/event/" + event + "/";
+    var url = "https://www.thebluealliance.com/api/v3/status";
+    // var url = "https://jsonplaceholder.typicode.com/todos/1"
+    $.ajax({
+         url: url,
+         type: "GET",
+         headers: {
+             "X-TBA-Auth_Key": '6GAtJKQu3pi8o2MWlrCiil3kCaYONueEAngycXBAc6W5d4FJmdLDEXQ3aznfBd9M',
+             "Access-Control-Allow-Headers": 'X-TBA-Auth_Key',
+         },
+         success: function(data) { console.log(data); }
+      });
+    this.json = [];
     this.json = this.json.filter(function (e) {
       return e.comp_level == 'qm';
     });
@@ -27,7 +45,8 @@ export class PrematchWindowComponent implements OnInit {
     // this.updateBlocks();
   }
 
-  updateMatchNum(event: any) {
+  async updateMatchNum(event: any) {
+      // this.json = await this._eventDataService.get();
     this.matchNum = parseInt(event.target.value);
     if (this.matchNum > 0 && this.matchNum < this.json.length) {
       // this.updateBlocks();

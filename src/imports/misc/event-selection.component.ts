@@ -13,7 +13,7 @@ export class EventSelectionComponent implements OnInit {
     openValue: boolean = false;
     @Output() openChange = new EventEmitter();
 
-    competition = new FormControl('', Validators.required);
+    competition: FormControl;
     currentComp: string;
 
     constructor(@Inject(LOCAL_STORAGE) private storage: WebStorageService) {}
@@ -30,7 +30,7 @@ export class EventSelectionComponent implements OnInit {
 
     ngOnInit() {
         this.currentComp = this.storage.get("competition");
-        this.competition.value = this.currentComp;
+        this.competition = new FormControl(this.currentComp, Validators.required);
     }
 
     test() {
