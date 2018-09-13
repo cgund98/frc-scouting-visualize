@@ -30,6 +30,7 @@ export class EventSelectionComponent implements OnInit {
 
     ngOnInit() {
         this.currentComp = this.storage.get("competition");
+        this.competition.value = this.currentComp;
     }
 
     test() {
