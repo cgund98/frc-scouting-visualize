@@ -36,12 +36,12 @@ export class PrematchBlockComponent implements OnInit {
 
   constructor(@Inject(LOCAL_STORAGE) private storage: WebStorageService, private _dataService: DataService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.matches = this._dataService.get("matches.json");
-    if (this.matches.length > 0) {
-      this.refresh();
-    }
+    this.matches = await this._dataService.get("matches.json");
+    // if (this.matches.length > 0) {
+    //   this.refresh();
+    // }
   }
 
   updateTeamNum(event: any) {
@@ -61,9 +61,9 @@ export class PrematchBlockComponent implements OnInit {
     this.refresh();
   }
 
-  refresh() {
+  async refresh() {
 
-    var teamStats = this.getTeamStats();
+    var teamStats = await this.getTeamStats();
 
     if (teamStats.missing) {
       let autonRows = [
@@ -85,8 +85,10 @@ export class PrematchBlockComponent implements OnInit {
     this.teleopRows = this.getTeleopRows(teamStats);
   }
 
-  getTeamStats() {
-    this.matches = this._dataService.get("matches.json");
+  async getTeamStats() {
+    this.matches = await this._dataService.get("matches.json");
+    this.matches = this.matches ? this.matches : []
+    // console.log(this.matches);
 
     var teamStats = {
       missing: true,

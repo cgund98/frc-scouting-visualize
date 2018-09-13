@@ -15,14 +15,14 @@ export class AnalyzePageComponent implements OnInit {
     ngOnInit() {
         this.analysisTab = true;
         var i = 0;
-        while(true) {
-            this.matches = this._dataService.get("matches.json");
-            if (this.matches.length > 0 || i > 10000) {
-                console.log('Loaded...');
-                break;
-            }
-            i++;
-        }
+        // while(true) {
+        //     this.matches = this._dataService.get("matches.json");
+        //     if (this.matches.length > 0 || i > 10000) {
+        //         console.log('Loaded...');
+        //         break;
+        //     }
+        //     i++;
+        // }
     }
     changeTab() {
         this.analysisTab = !this.analysisTab;

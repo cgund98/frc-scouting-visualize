@@ -17,7 +17,7 @@ export class PrematchWindowComponent implements OnInit {
 
   ngOnInit() {
     // this.json = require('../../../../../test.json');
-    this.json = {};
+    this.json = [{}];
     this.json = this.json.filter(function (e) {
       return e.comp_level == 'qm';
     });
