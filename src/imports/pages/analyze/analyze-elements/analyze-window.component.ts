@@ -44,10 +44,7 @@ export class AnalyzeWindowComponent implements OnInit {
     this.competition = this.storage.get("competition");
     if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
     this.query = "matches[event=" + this.competition + "]";
-    // this.matches = Matches.find({event: this.competition}).fetch();
     await this.getMatches();
-    console.log(this.matches);
-
   }
 
   async getMatches() {
@@ -57,14 +54,15 @@ export class AnalyzeWindowComponent implements OnInit {
       this.matches = this.matches.filter(function (e) {
         return e.event == comp;
       });
+      // console.log(this.matches);
   }
 
   async refresh() {
       this.competition = this.storage.get("competition");
       if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
       // this.matches = Matches.find({event: this.competition}).fetch();
+      if (this.matches.length !== 0) return;
       await this.getMatches();
-      console.log(this.matches);
 
     var teamStats = [];
 
