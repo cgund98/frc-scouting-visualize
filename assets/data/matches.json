@@ -1,0 +1,100 @@
+[
+{
+    "_id" : "p5CCvqbQH3jtbGxMu",
+    "matchNum" : 1,
+    "teamNum" : 74,
+    "posNum" : 1,
+    "color" : "blue",
+    "totalPickedUp" : 0,
+    "totalPlaced" : 0,
+    "climbed" : false,
+    "runs" : [ ],
+    "autonLineCrossed" : false,
+    "event" : "2018inmis",
+    "notes" : ""
+},
+{
+    "_id" : "rW3ACTniihFLJdqHb",
+    "matchNum" : 2,
+    "teamNum" : 4272,
+    "posNum" : 3,
+    "color" : "red",
+    "totalPickedUp" : 1,
+    "totalPlaced" : 2,
+    "climbed" : false,
+    "runs" : [
+        {
+            "userError" : false,
+            "isAuton" : true,
+            "missedShot" : false,
+            "defendedAgainst" : false,
+            "timePlaced" : 1536781910550,
+            "placeLocation" : "middle-bottom-place",
+            "timeElapsed" : "NaN"
+        },
+        {
+            "userError" : false,
+            "isAuton" : true,
+            "missedShot" : false,
+            "defendedAgainst" : false,
+            "timePlaced" : 1536781914451,
+            "placeLocation" : "left-top-place",
+            "timePickedUp" : 1536781913622,
+            "pickUpLocation" : "left-right-pickup",
+            "timeElapsed" : 0.829
+        }
+    ],
+    "autonLineCrossed" : false,
+    "event" : "2018inmis",
+    "notes" : ""
+},
+{
+    "_id" : "rWs7WNsXgiZaS8Er3",
+    "matchNum" : 3,
+    "teamNum" : 1024,
+    "posNum" : 3,
+    "color" : "red",
+    "totalPickedUp" : 3,
+    "totalPlaced" : 3,
+    "climbed" : false,
+    "runs" : [
+        {
+            "userError" : false,
+            "isAuton" : true,
+            "missedShot" : false,
+            "defendedAgainst" : false,
+            "timePlaced" : 1536781920247,
+            "placeLocation" : "left-top-place",
+            "timePickedUp" : 1536781919787,
+            "pickUpLocation" : "left-right-pickup",
+            "timeElapsed" : 0.46
+        },
+        {
+            "userError" : false,
+            "isAuton" : true,
+            "missedShot" : false,
+            "defendedAgainst" : false,
+            "timePlaced" : 1536781921557,
+            "placeLocation" : "left-bottom-place",
+            "timePickedUp" : 1536781921089,
+            "pickUpLocation" : "left-right-pickup",
+            "timeElapsed" : 0.468
+        },
+        {
+            "userError" : false,
+            "isAuton" : true,
+            "missedShot" : false,
+            "defendedAgainst" : false,
+            "timePlaced" : 1536781922700,
+            "placeLocation" : "middle-top-place",
+            "timePickedUp" : 1536781922049,
+            "pickUpLocation" : "left-right-pickup",
+            "timeElapsed" : 0.651
+        }
+    ],
+    "autonLineCrossed" : false,
+    "event" : "2018inmis",
+    "notes" : ""
+}
+
+]
