@@ -24,7 +24,7 @@ export class DataService {
 
     // Uses http.get() to load data from a single API endpoint
     get(jsonName) {
-        this.http.get('/assets/data/' + jsonName).subscribe(
+        this.http.get('assets/data/' + jsonName).subscribe(
         res => {
               // console.log(res);
               this.data = res;

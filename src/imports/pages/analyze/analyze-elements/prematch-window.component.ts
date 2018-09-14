@@ -20,19 +20,23 @@ export class PrematchWindowComponent implements OnInit {
     constructor(private _eventDataService: EventDataService) {}
 
     async ngOnInit() {
+        await this.getCompetition();
+        this.matchNum = 1;
+        // console.log(this.json);
+        this.updateBlocks();
+    }
+
+    async getCompetition() {
         this.json = await this._eventDataService.get();
         if (!this.json) this.json = [];
             this.json = this.json.filter(function (e) {
             return e.comp_level == 'qm';
         });
         this.json = this.json.sort(function(a, b) { return a.match_number - b.match_number });
-        this.matchNum = 1;
-        // console.log(this.json);
-        this.updateBlocks();
     }
 
-    updateMatchNum(event: any) {
-        // this.json = await this._eventDataService.get();
+    async updateMatchNum(event: any) {
+        // await this.getCompetition();
         this.matchNum = parseInt(event.target.value);
         if (this.matchNum > 0 && this.matchNum < this.json.length) {
             this.updateBlocks();
@@ -41,8 +45,7 @@ export class PrematchWindowComponent implements OnInit {
     }
 
     updateBlocks() {
-        if (this.json != []) return;
-        console.log(this.json);
+        // console.log(this.json);
         let match = this.json[this.matchNum - 1];
         var blueTeams = match.alliances.blue.team_keys.map(function(e) {
             return parseInt(e.substring(3));
