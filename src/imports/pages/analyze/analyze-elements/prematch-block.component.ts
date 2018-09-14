@@ -13,6 +13,7 @@ export class PrematchBlockComponent implements OnInit {
 
   matches;
   @Input() teamNum: number;
+  @Input() color: string;
 
   @Output() update = new EventEmitter();
 
@@ -38,10 +39,19 @@ export class PrematchBlockComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.matches = await this._dataService.get("matches.json");
+    await this.getMatches();
     // if (this.matches.length > 0) {
     //   this.refresh();
     // }
+  }
+
+  async getMatches() {
+      this.matches = await this._dataService.get("matches.json");
+      var comp = this.storage.get('competition');
+      if (!this.matches) this.matches = [];return;
+      this.matches = this.matches.filter(function (e) {
+        return e.event == comp;
+      });
   }
 
   updateTeamNum(event: any) {
@@ -86,8 +96,7 @@ export class PrematchBlockComponent implements OnInit {
   }
 
   async getTeamStats() {
-    this.matches = await this._dataService.get("matches.json");
-    this.matches = this.matches ? this.matches : []
+    await this.getMatches();
     // console.log(this.matches);
 
     var teamStats = {

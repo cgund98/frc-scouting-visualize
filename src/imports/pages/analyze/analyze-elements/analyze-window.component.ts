@@ -40,21 +40,30 @@ export class AnalyzeWindowComponent implements OnInit {
 
   constructor(@Inject(LOCAL_STORAGE) private storage: WebStorageService, private _dataService: DataService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.competition = this.storage.get("competition");
     if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
     this.query = "matches[event=" + this.competition + "]";
     // this.matches = Matches.find({event: this.competition}).fetch();
-    this.matches = this._dataService.get("matches.json");
+    await this.getMatches();
     console.log(this.matches);
 
   }
 
-  refresh() {
+  async getMatches() {
+      this.matches = await this._dataService.get("matches.json");
+      var comp = this.storage.get('competition');
+      if (!this.matches) this.matches = []; return;
+      this.matches = this.matches.filter(function (e) {
+        return e.event == comp;
+      });
+  }
+
+  async refresh() {
       this.competition = this.storage.get("competition");
       if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
       // this.matches = Matches.find({event: this.competition}).fetch();
-      this.matches = this._dataService.get("matches.json");
+      await this.getMatches();
       console.log(this.matches);
 
     var teamStats = [];
