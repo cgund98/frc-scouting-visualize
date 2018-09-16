@@ -52,9 +52,16 @@ export class EventDataService {
 
     async get() {
         this.event = this.storage.get("competition");
+
+        let events = await this.http.get<any>('assets/data/competitions.json').toPromise();
+        let filt = (e) => {return e.name == this.event;}
+        let event = events.filter(filt)[0];
+        // console.log(event);
+
+        if (event) return event.matches;
+
         let url = "https://www.thebluealliance.com/api/v3/event/" + this.event + "/matches";
         // var url = "https://www.thebluealliance.com/api/v3/status";
-        // var url = 'https://jsonplaceholder.typicode.com/todos/1';
 
         try {
             let res = await this.http.get<any>(url, httpOptions).toPromise();
@@ -62,6 +69,7 @@ export class EventDataService {
             return res;
         } catch(err) {
             // console.log(err);
+            return [];
         }
     }
 }
