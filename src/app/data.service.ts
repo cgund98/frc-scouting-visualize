@@ -64,6 +64,7 @@ export class EventDataService {
         // var url = "https://www.thebluealliance.com/api/v3/status";
 
         try {
+            // Don't forget to use CORS
             let res = await this.http.get<any>(url, httpOptions).toPromise();
             // console.log(res);
             return res;
