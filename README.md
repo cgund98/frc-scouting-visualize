@@ -2,6 +2,8 @@
 
 This is the 'client' version of FRC Scouting that runs on Github Pages, so anyone can view the data.
 
+Demo available at https://cgund98.github.io/frc-scouting-visualize
+
 ## Prerequisites
 
 1.  An OS with bash.  I use Ubuntu LTS.
