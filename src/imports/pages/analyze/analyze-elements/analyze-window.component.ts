@@ -42,7 +42,9 @@ export class AnalyzeWindowComponent implements OnInit {
 
   async ngOnInit() {
     this.competition = this.storage.get("competition");
-    if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
+    // if (!this.competition) {window.alert("You must set the event.  Do this by clicking the 'Event' link."); return}
+    if (!this.competition) this.storage.set("competition", "2018inmis");
+    this.competition = this.storage.get("competition");
     this.query = "matches[event=" + this.competition + "]";
     await this.getMatches();
   }
