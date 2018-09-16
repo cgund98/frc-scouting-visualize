@@ -4,10 +4,10 @@ import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service';
 
 const httpOptions = {
     headers: new HttpHeaders()
-        .set('X-TBA-Auth_Key', "6GAtJKQu3pi8o2MWlrCiil3kCaYONueEAngycXBAc6W5d4FJmdLDEXQ3aznfBd9M")
-        .set('Accept', 'application/json')
+        .set('X-TBA-Auth-Key', "6GAtJKQu3pi8o2MWlrCiil3kCaYONueEAngycXBAc6W5d4FJmdLDEXQ3aznfBd9M")
+        // .set('Accept', 'application/json')
         // .set('Content-Type', 'application/json')
-        .set('Access-Control-Allow-Headers', 'X-TBA-Auth_Key')
+        // .set('Access-Control-Allow-Headers', 'X-TBA-Auth_Key')
         // .set("Access-Control-Allow-Origin", "*")
         // .set('Access-Control-Request-Headers', ['Content-Type',])
 
